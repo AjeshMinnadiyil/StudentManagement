@@ -1,0 +1,114 @@
+﻿@model IEnumerable<StudentManagement.Models.Student>
+<h2>Student List</h2>
+
+<form asp-controller="Student" asp-action="Index" method="get">
+    <div class="input-group mb-3">
+        <input type="text"
+               name="searchString"
+               class="form-control"
+               placeholder="Search by name or email..." />
+
+        <button type="submit" class="btn btn-primary">
+            Search
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Clear
+        </a>
+    </div>
+</form>
+
+<p>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-controller="Student" asp-action="Create" class="btn btn-primary">Add Student</a> 
+    }
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th>Course</th>
+            <th>Department</th>
+              @if (User.IsInRole("Admin"))
+    {
+            <th>Action</th>
+    }
+        </tr>
+    </thead>
+    <tbody>
+       @foreach(var item in Model){
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                   <td>@item.Age</td>
+                      <td>@item.Email</td>
+                         <td>@item.Course</td>
+                <td>@(item.Department?.Name ?? "Not Assigned")</td>
+                         <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                         
+                       <a asp-controller="Student"
+                        asp-action="Delete"
+                        asp-route-id="@item.Id"
+                        class="btn btn-danger">
+                          Delete
+                         </a>
+                    }
+                    </td>
+
+                </tr>
+        }
+    </tbody>
+</table>
+
+@if (ViewBag.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+
+            @if (ViewBag.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@(ViewBag.CurrentPage - 1)"
+                       asp-route-searchString="@ViewBag.SearchString">
+                        Previous
+                    </a>
+                </li>
+            }
+
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@i"
+                       asp-route-searchString="@ViewBag.SearchString">
+                        @i
+                    </a>
+                </li>
+            }
+
+            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@(ViewBag.CurrentPage + 1)"
+                       asp-route-searchString="@ViewBag.SearchString">
+                        Next
+                    </a>
+                </li>
+            }
+
+        </ul>
+    </nav>
+}

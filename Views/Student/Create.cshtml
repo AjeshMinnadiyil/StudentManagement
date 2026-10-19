@@ -1,0 +1,41 @@
+﻿@model StudentManagement.Models.Student
+<h2>Add Student</h2>
+
+<form asp-controller="Student" asp-action="Create" method="post">
+    <div class="mb3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Age" class="form-label"></label>
+        <input asp-for="Age" class="form-control" />
+        <span asp-validation-for="Age" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Course" class="form-label"></label>
+        <input asp-for="Course" class="form-control" />
+        <span asp-validation-for="Course" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="DepartmentId" class="form-label">
+            Department
+        </label>
+
+        <select asp-for="DepartmentId"
+                asp-items="ViewBag.Departments"
+                class="form-select">
+            <option value="">-- Select Department --</option>
+        </select>
+
+        <span asp-validation-for="DepartmentId"
+              class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>
